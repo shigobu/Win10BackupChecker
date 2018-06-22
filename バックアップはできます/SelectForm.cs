@@ -45,6 +45,12 @@ namespace バックアップはできます
 
         private void OkButton_Click(object sender, EventArgs e)
         {
+            PathTextBox.Text = PathTextBox.Text.Trim();
+            if (string.IsNullOrEmpty(PathTextBox.Text))
+            {
+                MessageBox.Show("場所が不正です", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             this.Hide();
             ResultForm resultForm = new ResultForm();
             resultForm.Show(this);
