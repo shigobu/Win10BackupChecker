@@ -10,14 +10,14 @@ using System.Windows.Forms;
 
 namespace バックアップはできます
 {
-    public partial class Form1 : Form
+    public partial class SelectForm : Form
     {
-        public Form1()
+        public SelectForm()
         {
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void SelectButton_Click(object sender, EventArgs e)
         {
             //FolderBrowserDialogクラスのインスタンスを作成
             FolderBrowserDialog fbd = new FolderBrowserDialog();
@@ -29,16 +29,16 @@ namespace バックアップはできます
             fbd.RootFolder = Environment.SpecialFolder.Desktop;
             //最初に選択するフォルダを指定する
             //RootFolder以下にあるフォルダである必要がある
-            fbd.SelectedPath = @"C:";
+            fbd.SelectedPath = @"C:\Windows";
             //ユーザーが新しいフォルダを作成できるようにする
             //デフォルトでTrue
-            fbd.ShowNewFolderButton = false;
+            fbd.ShowNewFolderButton = true;
 
             //ダイアログを表示する
             if (fbd.ShowDialog(this) == DialogResult.OK)
             {
                 //選択されたフォルダを表示する
-                PassTextBox.Text = fbd.SelectedPath;
+                PathTextBox.Text = fbd.SelectedPath;
             }
         }
     }
