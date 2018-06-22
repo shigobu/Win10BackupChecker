@@ -57,7 +57,8 @@
         }
 
         #endregion
-        private System.Windows.Forms.ListBox listBox1;
+
+        public System.Windows.Forms.ListBox listBox1;
     }
 }
 

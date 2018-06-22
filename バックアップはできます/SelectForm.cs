@@ -48,8 +48,8 @@ namespace バックアップはできます
             this.Hide();
             ResultForm resultForm = new ResultForm();
             resultForm.Show(this);
-            ProgressBar progressBar = new ProgressBar();
-            progressBar.ShowDialog(resultForm);
+            ProgressBar progressBar = new ProgressBar(this, resultForm);
+            progressBar.ShowDialog();
         }
     }
 }
