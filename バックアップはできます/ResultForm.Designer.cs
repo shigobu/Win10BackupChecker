@@ -51,6 +51,7 @@
             this.Name = "ResultForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "結果";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ResultForm_FormClosing);
             this.ResumeLayout(false);
 
         }

@@ -16,5 +16,10 @@ namespace バックアップはできます
         {
             InitializeComponent();
         }
+
+        private void ResultForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

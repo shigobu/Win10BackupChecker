@@ -40,6 +40,16 @@ namespace バックアップはできます
                 //選択されたフォルダを表示する
                 PathTextBox.Text = fbd.SelectedPath;
             }
+            fbd.Dispose();
+        }
+
+        private void OkButton_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            ResultForm resultForm = new ResultForm();
+            resultForm.Show(this);
+            ProgressBar progressBar = new ProgressBar();
+            progressBar.ShowDialog(resultForm);
         }
     }
 }
