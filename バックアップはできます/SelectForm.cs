@@ -32,7 +32,7 @@ namespace バックアップはできます
             fbd.SelectedPath = @"C:\Windows";
             //ユーザーが新しいフォルダを作成できるようにする
             //デフォルトでTrue
-            fbd.ShowNewFolderButton = true;
+            fbd.ShowNewFolderButton = false;
 
             //ダイアログを表示する
             if (fbd.ShowDialog(this) == DialogResult.OK)

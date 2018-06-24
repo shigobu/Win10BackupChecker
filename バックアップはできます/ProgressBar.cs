@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Linq;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace バックアップはできます
 {
@@ -43,6 +44,18 @@ namespace バックアップはできます
                 fileCount += files.Count();
                 bgWorker.ReportProgress(fileCount, new FlagAndMaxvalue(WoekFlag.Counting));
             }
+
+            //ファイルの比較
+            //ディレクトリにあるファイルを比較
+            foreach (var directory in directorys)
+            {
+                List<string> files = ComparisonFileName(bgWorker, directory, fileCount);
+                if (files.Count != 0)
+                {
+                    bgWorker.ReportProgress(0, new FlagAndMaxvalue(WoekFlag.FileUpdate, 0, files.ToArray()));
+                }
+            }
+
         }
 
         private void BackgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -60,6 +73,17 @@ namespace バックアップはできます
                 case WoekFlag.Counting:
                     this.label1.Text = "見つかったファイル数：" + e.ProgressPercentage.ToString();
                     this.Text = this.label1.Text;
+                    break;
+                case WoekFlag.Comparison:
+                    this.label1.Text = "比較中 " + e.ProgressPercentage.ToString() + @"/" + flagAndMaxvalue.Maxvalue.ToString();
+                    this.Text = this.label1.Text;
+                    this.label1.Update();
+                    this.progressBar1.Maximum = flagAndMaxvalue.Maxvalue;
+                    this.progressBar1.Value = e.ProgressPercentage;
+                    this.progressBar1.Style = ProgressBarStyle.Blocks;
+                    break;
+                case WoekFlag.FileUpdate:
+                    ResultForm.listBox1.Items.AddRange(flagAndMaxvalue.FileNames);
                     break;
                 default:
                     break;
@@ -92,6 +116,37 @@ namespace バックアップはできます
             //キャンセルする
             backgroundWorker1.CancelAsync();
         }
+
+        int fileCountCounter = 0;
+
+        /// <summary>
+        /// 指定された、ディレクトリ内のファイルを比較し、同じ名前のファイルがあったファイルを返します。
+        /// </summary>
+        /// <param name="directory">ディレクトリ</param>
+        /// <returns>同じ名前ファイル名一覧</returns>
+        private List<string> ComparisonFileName(BackgroundWorker bgWorker, string directory, int fileCount)
+        {
+            //同じ名前があったときの格納場所
+            List<string> sameNameFiles = new List<string>();
+            //ディレクトリにあるファイル一覧
+            string[] files = Directory.GetFiles(directory, "*");
+            //同じ名前があるか確認
+            for (int i = 0; i < files.Length - 1; i++)
+            {
+                for (int j = i + 1; j < files.Length; j++)
+                {
+                    CompareInfo ci = CultureInfo.CurrentCulture.CompareInfo;
+                    if (ci.Compare(files[i], files[j], CompareOptions.IgnoreWidth | CompareOptions.IgnoreKanaType) == 0)
+                    {
+                        sameNameFiles.Add(files[i]);
+                    }
+                }
+            }
+            fileCountCounter += files.Length;
+            bgWorker.ReportProgress(fileCountCounter, new FlagAndMaxvalue(WoekFlag.Comparison, fileCount));
+
+            return sameNameFiles;
+        }
     }
 
     /// <summary>
@@ -110,7 +165,11 @@ namespace バックアップはできます
         /// <summary>
         /// ファイル比較中
         /// </summary>
-        Comparison
+        Comparison,
+        /// <summary>
+        /// ファイルをリストへ追加
+        /// </summary>
+        FileUpdate
     }
 
     /// <summary>
@@ -140,6 +199,17 @@ namespace バックアップはできます
         }
 
         /// <summary>
+        /// フラグと最大値、ファイル名を指定して、オブジェクトを初期化します。
+        /// </summary>
+        /// <param name="flag">実行中フラグ</param>
+        /// <param name="maxvalue">最大値</param>
+        /// <param name="fileName">ファイル名</param>
+        public FlagAndMaxvalue(WoekFlag flag, int maxvalue, string[] fileNames) : this(flag, maxvalue)
+        {
+            FileNames = fileNames;
+        }
+
+        /// <summary>
         /// 実行中フラグ
         /// </summary>
         public WoekFlag Flag
@@ -156,6 +226,14 @@ namespace バックアップはできます
             get;
             set;
         }
-    }
 
+        /// <summary>
+        /// ファイル名
+        /// </summary>
+        public string[] FileNames
+        {
+            get;
+            set;
+        }
+    }
 }

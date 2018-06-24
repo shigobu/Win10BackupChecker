@@ -21,5 +21,10 @@ namespace バックアップはできます
         {
             Application.Exit();
         }
+
+        private void listBox1_DoubleClick(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("EXPLORER.EXE", @"/select," + listBox1.SelectedItem.ToString());
+        }
     }
 }
