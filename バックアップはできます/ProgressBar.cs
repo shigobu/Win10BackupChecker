@@ -31,9 +31,12 @@ namespace バックアップはできます
             //はじめのディレクトリ追加
             directorys.Add(SelectForm.PathTextBox.Text);
             //サブディレクトリ追加
-            foreach (var item in Directory.GetDirectories(SelectForm.PathTextBox.Text, "*", SearchOption.AllDirectories))
+            if (SelectForm.SabFolderCheckBox.Checked)
             {
-                directorys.Add(item);
+                foreach (var item in Directory.GetDirectories(SelectForm.PathTextBox.Text, "*", SearchOption.AllDirectories))
+                {
+                    directorys.Add(item);
+                }
             }
 
             //ファイルの数カウント

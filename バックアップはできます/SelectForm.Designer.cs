@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SelectForm));
             this.label1 = new System.Windows.Forms.Label();
             this.PathTextBox = new System.Windows.Forms.TextBox();
             this.SelectButton = new System.Windows.Forms.Button();
@@ -70,6 +71,8 @@
             // SabFolderCheckBox
             // 
             this.SabFolderCheckBox.AutoSize = true;
+            this.SabFolderCheckBox.Checked = true;
+            this.SabFolderCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.SabFolderCheckBox.Location = new System.Drawing.Point(10, 45);
             this.SabFolderCheckBox.Margin = new System.Windows.Forms.Padding(2);
             this.SabFolderCheckBox.Name = "SabFolderCheckBox";
@@ -102,6 +105,7 @@
             this.Controls.Add(this.PathTextBox);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "SelectForm";
@@ -116,8 +120,8 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button SelectButton;
-        private System.Windows.Forms.CheckBox SabFolderCheckBox;
         private System.Windows.Forms.Button OkButton;
         public System.Windows.Forms.TextBox PathTextBox;
+        public System.Windows.Forms.CheckBox SabFolderCheckBox;
     }
 }
