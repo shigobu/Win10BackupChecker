@@ -35,6 +35,13 @@ namespace バックアップはできます
             {
                 foreach (var item in Directory.GetDirectories(SelectForm.PathTextBox.Text, "*", SearchOption.AllDirectories))
                 {
+                    //キャンセルされたか調べる
+                    if (bgWorker.CancellationPending)
+                    {
+                        //キャンセルされたとき
+                        e.Cancel = true;
+                        return;
+                    }
                     directorys.Add(item);
                 }
             }
@@ -43,6 +50,13 @@ namespace バックアップはできます
             int fileCount = 0;
             foreach (var item in directorys)
             {
+                //キャンセルされたか調べる
+                if (bgWorker.CancellationPending)
+                {
+                    //キャンセルされたとき
+                    e.Cancel = true;
+                    return;
+                }
                 var files = Directory.EnumerateFiles(item);
                 fileCount += files.Count();
                 bgWorker.ReportProgress(fileCount, new FlagAndMaxvalue(WoekFlag.Counting));
@@ -52,13 +66,19 @@ namespace バックアップはできます
             //ディレクトリにあるファイルを比較
             foreach (var directory in directorys)
             {
+                //キャンセルされたか調べる
+                if (bgWorker.CancellationPending)
+                {
+                    //キャンセルされたとき
+                    e.Cancel = true;
+                    return;
+                }
                 List<string> files = ComparisonFileName(bgWorker, directory, fileCount);
                 if (files.Count != 0)
                 {
                     bgWorker.ReportProgress(0, new FlagAndMaxvalue(WoekFlag.FileUpdate, 0, files.ToArray()));
                 }
             }
-
         }
 
         private void BackgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
