@@ -96,6 +96,7 @@ namespace バックアップはできます
                 case WoekFlag.Counting:
                     this.label1.Text = "見つかったファイル数：" + e.ProgressPercentage.ToString();
                     this.Text = this.label1.Text;
+                    this.label1.Update();
                     break;
                 case WoekFlag.Comparison:
                     this.label1.Text = "比較中 " + e.ProgressPercentage.ToString() + @"/" + flagAndMaxvalue.Maxvalue.ToString();
@@ -119,16 +120,17 @@ namespace バックアップはできます
             {
                 //エラーが発生したとき
                 MessageBox.Show("エラーが発生しました。\n" + e.Error.Message, "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
             }
             else if (e.Cancelled)
             {
                 //キャンセルされたとき
-                MessageBox.Show("キャンセルされました。");
+                MessageBox.Show("キャンセルされました。", "バックアップはできます。", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
                 //正常に終了したとき
-                MessageBox.Show("完了しました。");
+                MessageBox.Show("完了しました。", "バックアップはできます。", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             this.Close();                
         }
